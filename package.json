@@ -5,6 +5,7 @@
   "description": "a Sails application",
   "keywords": [],
   "dependencies": {
+    "gulp-sass": "^4.0.1",
     "include-all": "^1.0.0",
     "rc": "1.0.1",
     "sails": "^0.12.13",
@@ -21,5 +22,8 @@
   },
   "author": "Brandy Lee Camacho",
   "linkedIn": "https://www.linkedin.com/in/brandycamacho/",
-  "email": "brandy@udacity.com"
+  "email": "brandy@udacity.com",
+  "devDependencies": {
+    "gulp": "^4.0.0"
+  }
 }
