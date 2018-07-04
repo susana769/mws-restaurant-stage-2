@@ -45,7 +45,8 @@ self.addEventListener('install', function(event) {
                         '/images_src/fixed/',
                         '/images_src/fixed/logo.svg', 
                         '/developers/manifest.json',
-                        '/?utm_source=homescreen'
+                        '/?utm_source=homescreen',
+                        '/404.html'
                     ]);
                 }
             )
@@ -80,7 +81,31 @@ self.addEventListener('activate', function(event) {
 addEventListener('fetch', event => {
   // Permite al navegador hacer este asunto por defecto
   // para peticiones non-GET.
-  if (event.request.method != 'GET') return;
+  /*if (event.request.method != 'GET') return;*/
+
+
+if (event.request.method === 'GET') {
+    event.respondWith(
+      caches.match(event.request)
+      .then((cached) => {
+        var networked = fetch(event.request)
+          .then((response) => {
+            let cacheCopy = response.clone()
+            caches.open(staticCacheName)
+              .then(cache => cache.put(event.request, cacheCopy))
+            return response;
+          })
+          .catch(() => caches.match(offlinePage));
+        return cached || networked;
+      })
+    )
+  }
+
+
+
+
+
+
 
   // Evita el valor predeterminado, y manejar solicitud nosostros mismos.
   event.respondWith(async function() {
