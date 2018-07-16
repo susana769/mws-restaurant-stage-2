@@ -11,16 +11,16 @@ self.addEventListener('install', function(event) {
                         '/',
                         '/index.html',
                         '/restaurant.html',
-                        '/css/',
+                       /* '/css/',*/
                         '/css/styles.css',
-                        '/data/',
+                /*       '/data/',*/
                         '/data/restaurants.json',
-                        '/js/',
+                   /*     '/js/',*/
                         '/js/idb.js',
                         '/js/dbhelper.js',
                         '/js/main.js',
                         '/js/restaurant_info.js',
-                        '/images_src/',
+              /*          '/images_src/',*/
                         '/images_src/emily.jpg',
                         '/images_src/emily_medium.jpg',
                         '/images_src/casaenrique.jpg',
@@ -42,9 +42,9 @@ self.addEventListener('install', function(event) {
                         '/images_src/superiorityburger_medium.jpg',
                         '/images_src/thedutch.jpg',
                         '/images_src/thedutch_medium.jpg',
-                        '/images_src/fixed/',
+                  /*      '/images_src/fixed/',*/
                         '/images_src/fixed/logo.svg', 
-                        '/developers/manifest.json',
+                  /*      '/manifest.json',*/
                         '/?utm_source=homescreen',
                         '/404.html'
                     ]);
@@ -85,7 +85,7 @@ addEventListener('fetch', event => {
 
 
 if (event.request.method === 'GET') {
-    event.respondWith(
+  /*  event.respondWith(
       caches.match(event.request)
       .then((cached) => {
         var networked = fetch(event.request)
@@ -98,7 +98,20 @@ if (event.request.method === 'GET') {
           .catch(() => caches.match(offlinePage));
         return cached || networked;
       })
-    )
+    )*/
+     event.respondWith(caches.match(event.request).then(function (cached) {//search the cache
+        if (cached !== undefined) {
+            return cached; //Got it from cache, return it immediatelly!
+        } else {
+            return fetch(event.request).then(function (res) { // not in cache, fetch it
+                var responseClone = res.clone(); // clone the response
+                caches.open(staticCacheName).then(function (cache) {
+                    cache.put(event.request, responseClone); // add it to cache
+                });
+                return res; // return it
+            });
+        }
+    }));
   }
 
 
