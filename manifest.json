@@ -24,7 +24,7 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": "/?utm_source=homescreen",
+  "start_url": "/",
   "theme_color": "#F58500",
   "background_color": "#ffffff"
 }
